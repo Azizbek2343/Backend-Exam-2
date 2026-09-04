@@ -32,7 +32,7 @@ const deliveryMethodController = require("../controller/delivery_methodControlle
  *       500:
  *         description: Server error
  */
-router.post("/deliveryMethod", deliveryMethodController.createDeliveryMethod);
+router.post("/deliveryMethods", deliveryMethodController.createDeliveryMethod);
 
 /**
  * @swagger
@@ -46,7 +46,7 @@ router.post("/deliveryMethod", deliveryMethodController.createDeliveryMethod);
  *       500:
  *         description: Server error
  */
-router.get("/deliveryMethod", deliveryMethodController.getDeliveryMethods);
+router.get("/deliveryMethods", deliveryMethodController.getDeliveryMethods);
 
 /**
  * @swagger

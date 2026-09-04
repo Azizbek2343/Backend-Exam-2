@@ -34,7 +34,7 @@ const cartItemController = require("../controller/cart_itemController");
  *       500:
  *         description: Server error
  */
-router.post("/cart-item", cartItemController.createCartItem);
+router.post("/cart-items", cartItemController.createCartItem);
 
 /**
  * @swagger
@@ -48,7 +48,7 @@ router.post("/cart-item", cartItemController.createCartItem);
  *       500:
  *         description: Server error
  */
-router.get("/cart-item", cartItemController.getCartItems);
+router.get("/cart-items", cartItemController.getCartItems);
 
 /**
  * @swagger

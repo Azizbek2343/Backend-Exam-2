@@ -13,5 +13,12 @@ module.exports = (sequelize) => {
         },
     });
 
+    DeliveryMethod.associate = (models) => {
+        DeliveryMethod.hasMany(models.Booking, {
+            foreignKey: "delivery_method_id",
+            as: "bookings",
+        });
+    };
+
     return DeliveryMethod;
 };

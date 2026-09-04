@@ -11,7 +11,14 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         }
-});
+    });
+
+    PaymentMethod.associate = (models) => {
+        PaymentMethod.hasMany(models.Booking, {
+            foreignKey: "payment_method_id",
+            as: "bookings",
+        });
+    };
 
     return PaymentMethod;
 };

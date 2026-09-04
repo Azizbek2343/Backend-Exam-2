@@ -8,10 +8,22 @@ module.exports = (sequelize) => {
             primaryKey: true,
         },
         name: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.STRING,
             allowNull: false,
         },
     });
+
+    Gender.associate = (models) => {
+        Gender.hasMany(models.HumanCategory, {
+            foreignKey: 'gender_id',
+            as: 'humanCategories',
+        });
+
+        Gender.hasMany(models.Customer, {
+            foreignKey: 'gender_id',
+            as: 'customer',
+        });
+    };
 
     return Gender;
 };

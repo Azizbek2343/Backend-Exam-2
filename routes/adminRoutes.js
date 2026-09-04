@@ -42,7 +42,39 @@ const adminController = require("../controller/adminController");
  *       500:
  *         description: Server error
  */
-router.post("/admin", adminController.createAdmin);
+router.post("/admins", adminController.createAdmin);
+
+/**
+ * @swagger
+ * /api/admins/login:
+ *   post:
+ *     tags: [Admins]
+ *     summary: Admin login
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               login:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *           example:
+ *             login: "admin_login"
+ *             password: "admin_password"
+ *     responses:
+ *       200:
+ *         description: Login successful, returns access and refresh tokens
+ *       400:
+ *         description: Invalid login or password
+ *       403:
+ *         description: Admin is not active
+ *       500:
+ *         description: Server error
+ */
+router.post("/admins/login", adminController.login);
 
 /**
  * @swagger
@@ -56,7 +88,7 @@ router.post("/admin", adminController.createAdmin);
  *       500:
  *         description: Server error
  */
-router.get("/admin", adminController.getAdmins);
+router.get("/admins", adminController.getAdmins);
 
 /**
  * @swagger

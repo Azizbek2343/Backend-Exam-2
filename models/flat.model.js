@@ -17,5 +17,12 @@ module.exports = (sequelize) => {
         },
     });
 
+    Flat.associate = (models) => {
+        Flat.hasMany(models.CustomerAddress, {
+            foreignKey: "flat_id",
+            as: "customerAddresses",
+        });
+    };
+
     return Flat;
 };

@@ -35,5 +35,32 @@ module.exports = (sequelize) => {
         tableName: 'booking',
     });
 
+    Booking.associate = (models) => {
+        Booking.belongsTo(models.Cart, {
+            foreignKey: "cart_id",
+            as: "cart",
+        });
+
+        Booking.belongsTo(models.PaymentMethod, {
+            foreignKey: "payment_method_id",
+            as: "paymentMethod",
+        });
+
+        Booking.belongsTo(models.DeliveryMethod, {
+            foreignKey: "delivery_method_id",
+            as: "deliveryMethod",
+        });
+
+        Booking.belongsTo(models.Discount, {
+            foreignKey: "discount_id",
+            as: "discount",
+        });
+
+        Booking.belongsTo(models.TicketStatus, {
+            foreignKey: "status_id",
+            as: "status",
+        });
+    };
+
     return Booking;
 };

@@ -37,7 +37,7 @@ const venueRoutes = require("./routes/venueRoutes");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors({ origin: "*" }));
@@ -72,16 +72,30 @@ app.use("/api", venuePhotoRoutes);
 app.use("/api", venueTypesRoutes);
 app.use("/api", venueRoutes);
 
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).send('Malformed JSON in request body');
+  }
+  next();
+});
+
 setupSwagger(app);
 
-sequelize
-    .sync()
-    .then(() => {
-      console.log("Bazaga ulandi");
-      app.listen(PORT, '0.0.0.0', () => {
-        console.log('Server ishlayapti');
-        console.log(`Local: http://localhost:${PORT}/api-docs`);
-      });  
-    })
+const startServer = () => {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log('Server ishlayapti');
+    console.log(`Local: http://localhost:${PORT}/api-docs`);
+  });
+};
 
-    .catch((err) => console.error("Baza xatosi", err));
+sequelize
+  .sync({ alter: true })
+  .then(() => {
+    console.log("Bazaga ulandi");
+    startServer();
+  })
+  .catch((err) => {
+    console.error("Baza xatosi", err);
+    console.log("Starting server despite DB error");
+    startServer();
+  });

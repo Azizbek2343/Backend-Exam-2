@@ -13,5 +13,17 @@ module.exports = (sequelize) => {
         },
     });
 
+    Lang.associate = (models) => {
+        Lang.hasMany(models.Event, {
+            foreignKey: "lang_id",
+            as: "event",
+        });
+
+        Lang.hasMany(models.Customer, {
+            foreignKey: "lang_id",
+            as: "customer",
+        });
+    };
+
     return Lang;
 };

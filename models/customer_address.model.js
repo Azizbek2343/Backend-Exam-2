@@ -51,5 +51,27 @@ module.exports = (sequelize) => {
         tableName: 'customer_address',
     });
 
+    CustomerAddress.associate = (models) => {
+        CustomerAddress.belongsTo(models.Customer, {
+            foreignKey: "customer_id",
+            as: "customer",
+        });
+
+        CustomerAddress.belongsTo(models.Region, {
+            foreignKey: "region_id",
+            as: "region",
+        });
+
+        CustomerAddress.belongsTo(models.District, {
+            foreignKey: "district_id",
+            as: "district",
+        });
+
+        CustomerAddress.belongsTo(models.Flat, {
+            foreignKey: "flat_id",
+            as: "flat",
+        });
+    };
+
     return CustomerAddress;
 };

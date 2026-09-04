@@ -43,7 +43,7 @@ const bookingController = require("../controller/bookingController");
  *       500:
  *         description: Server error
  */
-router.post("/booking", bookingController.createBooking);
+router.post("/bookings", bookingController.createBooking);
 
 /**
  * @swagger
@@ -57,7 +57,7 @@ router.post("/booking", bookingController.createBooking);
  *       500:
  *         description: Server error
  */
-router.get("/booking", bookingController.getBookings);
+router.get("/bookings", bookingController.getBookings);
 
 /**
  * @swagger

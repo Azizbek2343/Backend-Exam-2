@@ -24,11 +24,11 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         year: {
-            type: DataTypes.CHAR,
+            type: DataTypes.CHAR(2),
             allowNull: false,
         },
         month: {
-            type: DataTypes.CHAR,
+            type: DataTypes.CHAR(2),
             allowNull: false,
         },
         is_active: {
@@ -42,6 +42,13 @@ module.exports = (sequelize) => {
     }, {
         tableName: 'customer_card',
     });
+
+    CustomerCard.associate = (models) => {
+        CustomerCard.belongsTo(models.Customer, {
+            foreignKey: "customer_id",
+            as: "customer",
+        });
+    };
 
     return CustomerCard;
 };

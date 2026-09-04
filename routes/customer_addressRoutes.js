@@ -50,7 +50,7 @@ const customerAddressController = require("../controller/customer_addressControl
  *       500:
  *         description: Server error
  */
-router.post("/customer-address", customerAddressController.createCustomerAddress);
+router.post("/customer-addresses", customerAddressController.createCustomerAddress);
 
 /**
  * @swagger
@@ -64,7 +64,7 @@ router.post("/customer-address", customerAddressController.createCustomerAddress
  *       500:
  *         description: Server error
  */
-router.get("/customer-address", customerAddressController.getCustomerAddresses);
+router.get("/customer-addresses", customerAddressController.getCustomerAddresses);
 
 /**
  * @swagger

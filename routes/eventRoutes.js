@@ -23,7 +23,7 @@ const eventController = require("../controller/eventController");
  *             type: object
  *             properties:
  *               name:
- *                 type: integer
+ *                 type: string
  *               photo:
  *                 type: string
  *               start_date:
@@ -51,6 +51,19 @@ const eventController = require("../controller/eventController");
  *               release_date:
  *                 type: string
  *                 format: date
+ *           example:
+ *             name: "Azizbek"
+ *             photo: "image.jpg"
+ *             start_date: "2026-09-03"
+ *             start_time: "10:00:00"
+ *             finish_date: "2026-09-03"
+ *             finish_time: "11:00:00"
+ *             info: "Event info"
+ *             event_type_id: 1
+ *             human_category_id: 1
+ *             venue_id: 1
+ *             lang_id: 1
+ *             release_date: "2026-09-03"
  *     responses:
  *       201:
  *         description: Event created
@@ -59,7 +72,7 @@ const eventController = require("../controller/eventController");
  *       500:
  *         description: Server error
  */
-router.post("/event", eventController.createEvent);
+router.post("/events", eventController.createEvent);
 
 /**
  * @swagger
@@ -73,7 +86,7 @@ router.post("/event", eventController.createEvent);
  *       500:
  *         description: Server error
  */
-router.get("/event", eventController.getEvents);
+router.get("/events", eventController.getEvents);
 
 /**
  * @swagger
@@ -142,7 +155,7 @@ router.get("/events/:id", eventController.getEventById);
  *             type: object
  *             properties:
  *               name:
- *                 type: integer
+ *                 type: string
  *               photo:
  *                 type: string
  *               start_date:
@@ -170,6 +183,19 @@ router.get("/events/:id", eventController.getEventById);
  *               release_date:
  *                 type: string
  *                 format: date
+ *           example:
+ *             name: "Azizbek"
+ *             photo: "image.jpg"
+ *             start_date: "2026-09-03"
+ *             start_time: "10:00:00"
+ *             finish_date: "2026-09-03"
+ *             finish_time: "11:00:00"
+ *             info: "Event info"
+ *             event_type_id: 1
+ *             human_category_id: 1
+ *             venue_id: 1
+ *             lang_id: 1
+ *             release_date: "2026-09-03"
  *     responses:
  *       200:
  *         description: Event updated

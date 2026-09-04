@@ -1,14 +1,32 @@
-const { VenuePhoto } = require("../models");
+const { VenuePhoto, Venue } = require("../models");
 const { validateVenuePhoto } = require("../validation/venue_photoValidation");
 const { Op } = require("sequelize");
+
+const formatVenuePhotoResponse = (venuePhoto) => {
+    if (!venuePhoto) return null;
+    const json = venuePhoto.toJSON();
+
+    return {
+        id: json.id,
+        venue: json.venue || null,
+        url: json.url,
+        createdAt: json.createdAt,
+        updatedAt: json.updatedAt
+    };
+};
+
+const includeOptions = [
+    { model: Venue, as: "venue" }
+];
 
 exports.createVenuePhoto = async (req, res) => {
     const { error } = validateVenuePhoto(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     try {
-        const venuePhoto = await VenuePhoto.create(req.body);
-        res.status(201).send(venuePhoto);
+        let venuePhoto = await VenuePhoto.create(req.body);
+        venuePhoto = await VenuePhoto.findByPk(venuePhoto.id, { include: includeOptions });
+        res.status(201).send(formatVenuePhotoResponse(venuePhoto));
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -16,8 +34,9 @@ exports.createVenuePhoto = async (req, res) => {
 
 exports.getVenuePhotos = async (req, res) => {
     try {
-        const venuePhotos = await VenuePhoto.findAll();
-        res.status(200).send(venuePhotos);
+        const venuePhotos = await VenuePhoto.findAll({ include: includeOptions });
+        const formatted = venuePhotos.map(v => formatVenuePhotoResponse(v));
+        res.status(200).send(formatted);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -25,9 +44,9 @@ exports.getVenuePhotos = async (req, res) => {
 
 exports.getVenuePhotoById = async (req, res) => {
     try {
-        const venuePhoto = await VenuePhoto.findByPk(req.params.id);
+        const venuePhoto = await VenuePhoto.findByPk(req.params.id, { include: includeOptions });
         if (!venuePhoto) return res.status(404).send("Venue photo not found");
-        res.status(200).send(venuePhoto);
+        res.status(200).send(formatVenuePhotoResponse(venuePhoto));
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -38,11 +57,13 @@ exports.updateVenuePhoto = async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
     
     try {
-        const venuePhoto = await VenuePhoto.findByPk(req.params.id);
+        let venuePhoto = await VenuePhoto.findByPk(req.params.id);
         if (!venuePhoto) return res.status(404).send("Venue photo not found");
 
         await venuePhoto.update(req.body);
-        res.status(200).send(venuePhoto);
+        
+        venuePhoto = await VenuePhoto.findByPk(venuePhoto.id, { include: includeOptions });
+        res.status(200).send(formatVenuePhotoResponse(venuePhoto));
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -50,10 +71,10 @@ exports.updateVenuePhoto = async (req, res) => {
 
 exports.deleteVenuePhoto = async (req, res) => {
     try {
-        const venuePhoto = await VenuePhoto.findByPk(req.params.id);
+        const venuePhoto = await VenuePhoto.findByPk(req.params.id, { include: includeOptions });
         if (!venuePhoto) return res.status(404).send("Venue photo not found");
 
-        const deletedData = venuePhoto.toJSON();
+        const deletedData = formatVenuePhotoResponse(venuePhoto);
         await venuePhoto.destroy();
         
         res.status(200).send(deletedData);
@@ -73,11 +94,14 @@ exports.searchVenuePhotos = async (req, res) => {
             where: {
                 [Op.or]: [
                     { url: { [Op.iLike]: `%${query}%` } },
+                    ...(isNaN(query) ? [] : [{ venueId: query }])
                 ],
             },
+            include: includeOptions
         });
 
-        res.status(200).send(venuePhotos);
+        const formatted = venuePhotos.map(v => formatVenuePhotoResponse(v));
+        res.status(200).send(formatted);
     } catch (error) {
         res.status(500).send(error.message);
     }

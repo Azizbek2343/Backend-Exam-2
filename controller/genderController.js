@@ -17,7 +17,7 @@ exports.createGender = async (req, res) => {
 exports.getGenders = async (req, res) => {
     try {
         const genders = await Gender.findAll();
-        res.status(200).send(seatTypes);
+        res.status(200).send(genders);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -53,8 +53,8 @@ exports.deleteGender = async (req, res) => {
         const gender = await Gender.findByPk(req.params.id);
         if (!gender) return res.status(404).send("Gender not found");
 
-        const deletedData = seatType.toJSON();
-        await seatType.destroy();
+        const deletedData = gender.toJSON();
+        await gender.destroy();
         
         res.status(200).send(deletedData);
     } catch (error) {

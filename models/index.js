@@ -30,7 +30,6 @@ const VenuePhoto = require("./venue_photo.model")(sequelize, Sequelize);
 const VenueTypes = require("./venue_types.model")(sequelize, Sequelize);
 const Venue = require("./venue.model")(sequelize, Sequelize);
 
-Admin.associate(sequelize.models);
 Booking.associate(sequelize.models);
 CartItem.associate(sequelize.models);
 Cart.associate(sequelize.models);

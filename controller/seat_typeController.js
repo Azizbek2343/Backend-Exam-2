@@ -2,13 +2,28 @@ const { SeatType } = require("../models");
 const { validateSeatType } = require("../validation/seat_typeValidation");
 const { Op } = require("sequelize");
 
+const formatSeatTypeResponse = (seatType) => {
+    if (!seatType) return null;
+    const json = seatType.toJSON();
+
+    return {
+        id: json.id,
+        name: json.name || null,
+        createdAt: json.createdAt,
+        updatedAt: json.updatedAt
+    };
+};
+
+const includeOptions = [];
+
 exports.createSeatType = async (req, res) => {
     const { error } = validateSeatType(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     try {
-        const seatType = await SeatType.create(req.body);
-        res.status(201).send(seatType);
+        let seatType = await SeatType.create(req.body);
+        seatType = await SeatType.findByPk(seatType.id, { include: includeOptions });
+        res.status(201).send(formatSeatTypeResponse(seatType));
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -16,8 +31,9 @@ exports.createSeatType = async (req, res) => {
 
 exports.getSeatTypes = async (req, res) => {
     try {
-        const seatTypes = await SeatType.findAll();
-        res.status(200).send(seatTypes);
+        const seatTypes = await SeatType.findAll({ include: includeOptions });
+        const formatted = seatTypes.map(s => formatSeatTypeResponse(s));
+        res.status(200).send(formatted);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -25,9 +41,9 @@ exports.getSeatTypes = async (req, res) => {
 
 exports.getSeatTypeById = async (req, res) => {
     try {
-        const seatType = await SeatType.findByPk(req.params.id);
+        const seatType = await SeatType.findByPk(req.params.id, { include: includeOptions });
         if (!seatType) return res.status(404).send("Seat type not found");
-        res.status(200).send(seatType);
+        res.status(200).send(formatSeatTypeResponse(seatType));
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -38,11 +54,12 @@ exports.updateSeatType = async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
     
     try {
-        const seatType = await SeatType.findByPk(req.params.id);
+        let seatType = await SeatType.findByPk(req.params.id);
         if (!seatType) return res.status(404).send("Seat type not found");
 
         await seatType.update(req.body);
-        res.status(200).send(seatType);
+        seatType = await SeatType.findByPk(seatType.id, { include: includeOptions });
+        res.status(200).send(formatSeatTypeResponse(seatType));
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -50,10 +67,10 @@ exports.updateSeatType = async (req, res) => {
 
 exports.deleteSeatType = async (req, res) => {
     try {
-        const seatType = await SeatType.findByPk(req.params.id);
+        const seatType = await SeatType.findByPk(req.params.id, { include: includeOptions });
         if (!seatType) return res.status(404).send("Seat type not found");
 
-        const deletedData = seatType.toJSON();
+        const deletedData = formatSeatTypeResponse(seatType);
         await seatType.destroy();
         
         res.status(200).send(deletedData);
@@ -73,11 +90,14 @@ exports.searchSeatTypes = async (req, res) => {
             where: {
                 [Op.or]: [
                     { name: { [Op.iLike]: `%${query}%` } },
+                    ...(isNaN(query) ? [] : [{ id: query }])
                 ],
             },
+            include: includeOptions
         });
 
-        res.status(200).send(seatTypes);
+        const formatted = seatTypes.map(s => formatSeatTypeResponse(s));
+        res.status(200).send(formatted);
     } catch (error) {
         res.status(500).send(error.message);
     }

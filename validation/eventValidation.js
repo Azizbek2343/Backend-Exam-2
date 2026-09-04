@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 const validateEvent = (eventData) => {
     const schema = Joi.object({
-        name: Joi.number().integer().required(),
+        name: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
         photo: Joi.string().allow(null, "").optional(),
         start_date: Joi.date().required(),
         start_time: Joi.string().required(),

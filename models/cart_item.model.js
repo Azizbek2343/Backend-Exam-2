@@ -19,5 +19,17 @@ module.exports = (sequelize) => {
         tableName: 'cart_item',
     });
 
+    CartItem.associate = (models) => {
+        CartItem.belongsTo(models.Ticket, {
+            foreignKey: "ticket_id",
+            as: "ticket",
+        });
+
+        CartItem.belongsTo(models.Cart, {
+            foreignKey: "cart_id",
+            as: "cart",
+        });
+    };
+
     return CartItem;
 };

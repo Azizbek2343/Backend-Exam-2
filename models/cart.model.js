@@ -23,5 +23,27 @@ module.exports = (sequelize) => {
         tableName: 'cart',
     });
 
+    Cart.associate = (models) => {
+        Cart.hasMany(models.CartItem, {
+            foreignKey: "cart_id",
+            as: "cart_items",
+        });
+
+        Cart.belongsTo(models.Customer, {
+            foreignKey: "customer_id",
+            as: "customer",
+        });
+
+        Cart.belongsTo(models.TicketStatus, {
+            foreignKey: "status_id",
+            as: "status",
+        });
+
+        Cart.hasMany(models.Booking, {
+            foreignKey: "cart_id",
+            as: "bookings",
+        });
+    };
+
     return Cart;
 };

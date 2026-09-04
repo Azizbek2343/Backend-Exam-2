@@ -12,8 +12,15 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
     }, {
-        tableName: 'Tycket_Type',
+        tableName: 'ticket_type',
     });
+
+    TicketType.associate = (models) => {
+        TicketType.hasMany(models.Ticket, {
+            foreignKey: "ticket_type_id",
+            as: "tickets",
+        });
+    };
 
     return TicketType;
 };

@@ -17,5 +17,12 @@ module.exports = (sequelize) => {
         },
     });
 
+    Discount.associate = (models) => {
+        Discount.hasMany(models.Booking, {
+            foreignKey: "discount_id",
+            as: "bookings",
+        });
+    };
+
     return Discount;
 };

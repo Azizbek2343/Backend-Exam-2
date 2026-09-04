@@ -1,14 +1,32 @@
-const { District } = require("../models");
+const { District, Region } = require("../models");
 const { validateDistrict } = require("../validation/districtValidation");
 const { Op } = require("sequelize");
+
+const formatDistrictResponse = (district) => {
+    if (!district) return null;
+    const json = district.toJSON();
+
+    return {
+        id: json.id,
+        name: json.name || null,
+        region: json.region || json.Region || null,
+        createdAt: json.createdAt,
+        updatedAt: json.updatedAt
+    };
+};
+
+const includeOptions = [
+    { model: Region, as: "region" }
+];
 
 exports.createDistrict = async (req, res) => {
     const { error } = validateDistrict(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     try {
-        const district = await District.create(req.body);
-        res.status(201).send(district);
+        let district = await District.create(req.body);
+        district = await District.findByPk(district.id, { include: includeOptions });
+        res.status(201).send(formatDistrictResponse(district));
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -16,8 +34,9 @@ exports.createDistrict = async (req, res) => {
 
 exports.getDistricts = async (req, res) => {
     try {
-        const districts = await District.findAll();
-        res.status(200).send(districts);
+        const districts = await District.findAll({ include: includeOptions });
+        const formatted = districts.map(d => formatDistrictResponse(d));
+        res.status(200).send(formatted);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -25,9 +44,9 @@ exports.getDistricts = async (req, res) => {
 
 exports.getDistrictById = async (req, res) => {
     try {
-        const district = await District.findByPk(req.params.id);
+        const district = await District.findByPk(req.params.id, { include: includeOptions });
         if (!district) return res.status(404).send("District not found");
-        res.status(200).send(district);
+        res.status(200).send(formatDistrictResponse(district));
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -38,11 +57,12 @@ exports.updateDistrict = async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
     
     try {
-        const district = await District.findByPk(req.params.id);
+        let district = await District.findByPk(req.params.id);
         if (!district) return res.status(404).send("District not found");
         
         await district.update(req.body);
-        res.status(200).send(district);
+        district = await District.findByPk(district.id, { include: includeOptions });
+        res.status(200).send(formatDistrictResponse(district));
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -50,10 +70,10 @@ exports.updateDistrict = async (req, res) => {
 
 exports.deleteDistrict = async (req, res) => {
     try {
-        const district = await District.findByPk(req.params.id);
+        const district = await District.findByPk(req.params.id, { include: includeOptions });
         if (!district) return res.status(404).send("District not found");
 
-        const deletedData = district.toJSON();
+        const deletedData = formatDistrictResponse(district);
         await district.destroy();
         
         res.status(200).send(deletedData);
@@ -73,11 +93,14 @@ exports.searchDistricts = async (req, res) => {
             where: {
                 [Op.or]: [
                     { name: { [Op.iLike]: `%${query}%` } },
+                    ...(isNaN(query) ? [] : [{ id: query }])
                 ],
             },
+            include: includeOptions
         });
 
-        res.status(200).send(districts);
+        const formatted = districts.map(d => formatDistrictResponse(d));
+        res.status(200).send(formatted);
     } catch (error) {
         res.status(500).send(error.message);
     }

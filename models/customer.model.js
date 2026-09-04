@@ -47,5 +47,32 @@ module.exports = (sequelize) => {
         tableName: 'customer',
     });
 
+    Customer.associate = (models) => {
+        Customer.hasMany(models.Cart, {
+            foreignKey: "customer_id",
+            as: "carts",
+        });
+
+        Customer.hasMany(models.CustomerCard, {
+            foreignKey: "customer_id",
+            as: "customer_cards",
+        });
+
+        Customer.hasMany(models.CustomerAddress, {
+            foreignKey: "customer_id",
+            as: "customer_addresses",
+        });
+
+        Customer.belongsTo(models.Gender, {
+            foreignKey: "gender_id",
+            as: "gender",
+        });
+
+        Customer.belongsTo(models.Lang, {
+            foreignKey: "lang_id",
+            as: "lang",
+        });
+    };
+
     return Customer;
 };

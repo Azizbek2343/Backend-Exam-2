@@ -34,7 +34,7 @@ const flatController = require("../controller/flatController");
  *       500:
  *         description: Server error
  */
-router.post("/flat", flatController.createFlat);
+router.post("/flats", flatController.createFlat);
 
 /**
  * @swagger
@@ -48,7 +48,7 @@ router.post("/flat", flatController.createFlat);
  *       500:
  *         description: Server error
  */
-router.get("/flat", flatController.getFlats);
+router.get("/flats", flatController.getFlats);
 
 /**
  * @swagger

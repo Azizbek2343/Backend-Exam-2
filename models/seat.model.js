@@ -28,10 +28,34 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         location_in_schema: {
-            type: DataTypes.GEOMETRY,
+            type: DataTypes.STRING,
             allowNull: true,
         },
     });
+
+    Seat.associate = (models) => {
+        Seat.belongsTo(models.SeatType, {
+            foreignKey: 'seat_type_id',
+            as: 'seatType',
+        });
+
+        Seat.belongsTo(models.Sector, {
+            foreignKey: 'sector_id',
+            as: 'sector',
+        });
+
+        Seat.belongsTo(models.Venue, {
+            foreignKey: 'venue_id',
+            as: 'venue',
+        });
+
+        Seat.hasMany(models.Ticket, {
+            foreignKey: 'seat_id',
+            as: 'tickets',
+        });
+    };
+
+
 
     return Seat;
 };

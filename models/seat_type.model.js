@@ -8,10 +8,18 @@ module.exports = (sequelize) => {
             primaryKey: true,
         },
         name: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.STRING,
             allowNull: false,
         },
     });
+
+    SeatType.associate = (models) => {
+        SeatType.hasMany(models.Seat, {
+            foreignKey: 'seat_type_id',
+            as: 'seats',
+        });
+
+    };
 
     return SeatType;
 };

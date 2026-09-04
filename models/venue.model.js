@@ -28,7 +28,7 @@ module.exports = (sequelize) => {
             allowNull: true,
         },
         schema: {
-            type: DataTypes.GEOMETRY,
+            type: DataTypes.STRING,
             allowNull: true,
         },
         region_id: {
@@ -40,6 +40,39 @@ module.exports = (sequelize) => {
             allowNull: true,
         },
     });
+
+    Venue.associate = (models) => {
+        Venue.hasMany(models.VenueTypes, {
+            foreignKey: 'venueId',
+            as: 'venueTypes',
+        });
+
+        Venue.belongsTo(models.Region, {
+            foreignKey: 'region_id',
+            as: 'region',
+        });
+
+        Venue.belongsTo(models.District, {
+            foreignKey: "district_id",
+            as: "district",
+        });
+
+        Venue.hasMany(models.VenuePhoto, {
+            foreignKey: "venueId",
+            as: "photos",
+        });
+
+        Venue.hasMany(models.Seat, {
+            foreignKey: 'venue_id',
+            as: 'seat',
+        });
+
+        Venue.hasMany(models.Event, {
+            foreignKey: "venue_id",
+            as: "events",
+        });
+    };
+
 
     return Venue;
 };

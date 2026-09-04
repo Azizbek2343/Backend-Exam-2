@@ -1,4 +1,3 @@
-const { version } = require("joi");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 
@@ -9,6 +8,11 @@ const options = {
             title: "Express API with Swagger",
             version: "1.0.0",
         },
+        servers: [
+            {
+                url: `http://localhost:${process.env.PORT || 3000}`,
+            },
+        ],
     },
     apis: ["./routes/*.js"],
 };
@@ -16,7 +20,7 @@ const options = {
 const swaggerSpec = swaggerJsDoc(options);
 
 const setupSwagger = (app) => {
-    app.use("./api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 };
 
 module.exports = setupSwagger;

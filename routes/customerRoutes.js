@@ -49,7 +49,7 @@ const customerController = require("../controller/customerController");
  *       500:
  *         description: Server error
  */
-router.post("/customer", customerController.createCustomer);
+router.post("/customers", customerController.createCustomer);
 
 /**
  * @swagger
@@ -63,7 +63,7 @@ router.post("/customer", customerController.createCustomer);
  *       500:
  *         description: Server error
  */
-router.get("/customer", customerController.getCustomers);
+router.get("/customers", customerController.getCustomers);
 
 /**
  * @swagger

@@ -8,10 +8,27 @@ module.exports = (sequelize) => {
             primaryKey: true,
         },
         name: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.STRING,
             allowNull: false,
         },
     });
+
+    TicketStatus.associate = (models) => {
+        TicketStatus.hasMany(models.Ticket, {
+            foreignKey: 'status_id',
+            as: 'tickets',
+        });
+
+        TicketStatus.hasMany(models.Cart, {
+            foreignKey: 'status_id',
+            as: 'carts',
+        });
+
+        TicketStatus.hasMany(models.Booking, {
+            foreignKey: 'status_id',
+            as: 'bookings',
+        });
+    };
 
     return TicketStatus;
 };

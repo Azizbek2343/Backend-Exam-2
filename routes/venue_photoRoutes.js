@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const venuePhotoController = require("../controller/venuePhotoController");
+const venuePhotoController = require("../controller/venue_photoController");
 
 /**
  * @swagger

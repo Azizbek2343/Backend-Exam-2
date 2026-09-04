@@ -57,5 +57,32 @@ module.exports = (sequelize) => {
         },
     });
 
+    Event.associate = (models) => {
+        Event.belongsTo(models.EventType, {
+            foreignKey: "event_type_id",
+            as: "eventType",
+        });
+
+        Event.belongsTo(models.HumanCategory, {
+            foreignKey: "human_category_id",
+            as: "humanCategory",
+        });
+
+        Event.belongsTo(models.Venue, {
+            foreignKey: "venue_id",
+            as: "venue",
+        });
+
+        Event.belongsTo(models.Lang, {
+            foreignKey: "lang_id",
+            as: "lang",
+        });
+
+        Event.hasMany(models.Ticket, {
+            foreignKey: "event_id",
+            as: "tickets",
+        });
+    };
+
     return Event;
 };

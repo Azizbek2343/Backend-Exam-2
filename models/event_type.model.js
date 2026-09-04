@@ -17,5 +17,12 @@ module.exports = (sequelize) => {
         },
     });
 
+    EventType.associate = (models) => {
+        EventType.hasMany(models.Event, {
+            foreignKey: "event_type_id",
+            as: "events",
+        });
+    };
+
     return EventType;
 };

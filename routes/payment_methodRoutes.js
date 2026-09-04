@@ -32,7 +32,7 @@ const paymentMethodController = require("../controller/payment_methodController"
  *       500:
  *         description: Server error
  */
-router.post("/paymentMethod", paymentMethodController.createPaymentMethod);
+router.post("/paymentMethods", paymentMethodController.createPaymentMethod);
 
 /**
  * @swagger
@@ -46,7 +46,7 @@ router.post("/paymentMethod", paymentMethodController.createPaymentMethod);
  *       500:
  *         description: Server error
  */
-router.get("/paymentMethod", paymentMethodController.getPaymentMethods);
+router.get("/paymentMethods", paymentMethodController.getPaymentMethods);
 
 /**
  * @swagger
@@ -97,29 +97,6 @@ router.get("/paymentMethods/:id", paymentMethodController.getPaymentMethodById);
 /**
  * @swagger
  * /api/paymentMethods/{id}:
- *   get:
- *     tags: [PaymentMethods]
- *     summary: GET payment method by ID
- *     parameters: 
- *       - in: path
- *         name: id
- *         schema:
- *           type: integer
- *         required: true
- *         description: Payment Method ID
- *     responses:
- *       200:
- *         description: Payment method details
- *       404:
- *         description: Payment method not found
- *       500:
- *         description: Server error
- */
-router.get("/paymentMethods/:id", paymentMethodController.getPaymentMethodById);
-
-/**
- * @swagger
- * /api/paymentMethods/{id}:
  *   put:
  *     tags: [PaymentMethods]
  *     summary: Update payment method by ID
@@ -147,7 +124,7 @@ router.get("/paymentMethods/:id", paymentMethodController.getPaymentMethodById);
  *       500:
  *         description: Server error
  */
-router.put("/paymentmethods/:id", paymentMethodController.updatePaymentMethod);
+router.put("/paymentMethods/:id", paymentMethodController.updatePaymentMethod);
 
 /**
  * @swagger

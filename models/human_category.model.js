@@ -25,5 +25,17 @@ module.exports = (sequelize) => {
         },
     });
 
+    HumanCategory.associate = (models) => {
+        HumanCategory.belongsTo(models.Gender, {
+            foreignKey: "gender_id",
+            as: "gender",
+        });
+
+        HumanCategory.hasMany(models.Event, {
+            foreignKey: "human_category_id",
+            as: "events",
+        });
+    };
+
     return HumanCategory;
 };

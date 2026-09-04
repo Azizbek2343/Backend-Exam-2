@@ -34,7 +34,7 @@ const districtController = require("../controller/districtController");
  *       500:
  *         description: Server error
  */
-router.post("/district", districtController.createDistrict);
+router.post("/districts", districtController.createDistrict);
 
 /**
  * @swagger
@@ -48,7 +48,7 @@ router.post("/district", districtController.createDistrict);
  *       500:
  *         description: Server error
  */
-router.get("/district", districtController.getDistricts);
+router.get("/districts", districtController.getDistricts);
 
 /**
  * @swagger

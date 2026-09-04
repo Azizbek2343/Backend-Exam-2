@@ -147,7 +147,7 @@ router.get("/gender/:id", genderController.getGenderById);
  *       500:
  *         description: Server error
  */
-router.put("/gender/:id", genderController1.updateGender);
+router.put("/gender/:id", genderController.updateGender);
 
 /**
  * @swagger

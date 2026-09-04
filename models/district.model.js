@@ -17,5 +17,22 @@ module.exports = (sequelize) => {
         },
     });
 
+    District.associate = (models) => {
+        District.hasMany(models.Venue, {
+            foreignKey: 'district_id',
+            as: 'venues',
+        });
+
+        District.hasMany(models.CustomerAddress, {
+            foreignKey: "district_id",
+            as: "customerAddresses",
+        });
+
+        District.belongsTo(models.Region, {
+            foreignKey: 'region_id',
+            as: 'region',
+        });
+    };
+
     return District;
 };

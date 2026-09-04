@@ -50,10 +50,8 @@ exports.updatePaymentMethod = async (req, res) => {
 
 exports.deletePaymentMethod = async (req, res) => {
     try {
-        const paymentMethod = PaymentMethod.findByPk(req.params.id);
+        const paymentMethod = await PaymentMethod.findByPk(req.params.id);
         if (!paymentMethod) return res.status(404).send("PaymentMethod not found");
-
-        const paymentMethod = paymentMethod.toJSON();
 
         await paymentMethod.destroy();
         res.status(200).send(paymentMethod);
@@ -66,20 +64,20 @@ exports.searchPaymentMethods = async (req, res) => {
     try{
         console.log("Query received:", req.query.query);
         
-        const { query } = req.body;
+        const { query } = req.query;
         if (!query) {
             return res.status(400).send("Search query is required");
-    }
+        }
 
-    const paymentMethods = await PaymentMethod.findAll({
-        where: {
-            [Op.or]: [
-                { name: { [Op.iLike]: `%${query}%` } },
-            ],
-        },
-    });
+        const paymentMethods = await PaymentMethod.findAll({
+            where: {
+                [Op.or]: [
+                    { name: { [Op.iLike]: `%${query}%` } },
+                ],
+            },
+        });
 
-    res.status(200).send(paymentMethods);
+        res.status(200).send(paymentMethods);
     } catch (error) {
         res.status(500).send(error.message);
     }

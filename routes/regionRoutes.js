@@ -32,7 +32,7 @@ const regionController = require("../controller/regionController");
  *       500:
  *         description: Server error
  */
-router.post("/region", regionController.createRegion);
+router.post("/regions", regionController.createRegion);
 
 /**
  * @swagger
@@ -46,7 +46,7 @@ router.post("/region", regionController.createRegion);
  *       500:
  *         description: Server error
  */
-router.get("/region", regionController.getRegions);
+router.get("/regions", regionController.getRegions);
 
 /**
  * @swagger

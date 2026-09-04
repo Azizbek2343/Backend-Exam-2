@@ -34,7 +34,7 @@ const eventTypeController = require("../controller/event_typeController");
  *       500:
  *         description: Server error
  */
-router.post("/event-type", eventTypeController.createEventType);
+router.post("/event-types", eventTypeController.createEventType);
 
 /**
  * @swagger
@@ -48,7 +48,7 @@ router.post("/event-type", eventTypeController.createEventType);
  *       500:
  *         description: Server error
  */
-router.get("/event-type", eventTypeController.getEventTypes);
+router.get("/event-types", eventTypeController.getEventTypes);
 
 /**
  * @swagger

@@ -46,7 +46,7 @@ const customerCardController = require("../controller/customer_cardController");
  *       500:
  *         description: Server error
  */
-router.post("/customer-card", customerCardController.createCustomerCard);
+router.post("/customer-cards", customerCardController.createCustomerCard);
 
 /**
  * @swagger
@@ -60,7 +60,7 @@ router.post("/customer-card", customerCardController.createCustomerCard);
  *       500:
  *         description: Server error
  */
-router.get("/customer-card", customerCardController.getCustomerCards);
+router.get("/customer-cards", customerCardController.getCustomerCards);
 
 /**
  * @swagger

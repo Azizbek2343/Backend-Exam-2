@@ -35,7 +35,7 @@ const discountController = require("../controller/discountController");
  *       500:
  *         description: Server error
  */
-router.post("/discount", discountController.createDiscount);
+router.post("/discounts", discountController.createDiscount);
 
 /**
  * @swagger
@@ -49,7 +49,7 @@ router.post("/discount", discountController.createDiscount);
  *       500:
  *         description: Server error
  */
-router.get("/discount", discountController.getDiscounts);
+router.get("/discounts", discountController.getDiscounts);
 
 /**
  * @swagger

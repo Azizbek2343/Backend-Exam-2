@@ -17,5 +17,17 @@ module.exports = (sequelize) => {
         },
     });
 
+    VenueTypes.associate = (models) => {
+        VenueTypes.belongsTo(models.Venue, {
+            foreignKey: 'venueId',
+            as: 'venue',
+        });
+        
+        VenueTypes.belongsTo(models.Types, {
+            foreignKey: "typeId",
+            as: "type",
+        });
+    };
+
     return VenueTypes;
 };

@@ -42,7 +42,7 @@ const ticketController = require("../controller/ticketController");
  *       500:
  *         description: Server error
  */
-router.post("/ticket", ticketController.createTicket);
+router.post("/tickets", ticketController.createTicket);
 
 /**
  * @swagger
@@ -56,7 +56,7 @@ router.post("/ticket", ticketController.createTicket);
  *       500:
  *         description: Server error
  */
-router.get("/ticket", ticketController.getTickets);
+router.get("/tickets", ticketController.getTickets);
 
 /**
  * @swagger
